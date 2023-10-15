@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	customPlot->legend->setSelectableParts(QCPLegend::spItems); // legend box shall not be selectable, only legend items
 
 	addRealtimeGraph();
+    addRealtimeScatterPlotGraph();
 	addRandomGraph();
 	addRandomGraph();
 
@@ -127,13 +128,30 @@ void MainWindow::addRealtimeGraph() {
 	startTimer(40);
 }
 
+void MainWindow::addRealtimeScatterPlotGraph()
+{
+    customPlot->addGraph();
+    customPlot->graph(1)->setName(QString("Scatter"));
+    customPlot->graph(1)->setLineStyle(QCPGraph::lsNone);
+
+    qv_x = { 0, .01, .02};
+    qv_y = { 0.005, 0.05, 0.028 };
+
+    customPlot->graph(1)->setData(qv_x, qv_y);
+    customPlot->graph(1)->setScatterStyle(QCPScatterStyle::ssCircle);
+}
+
 void MainWindow::addRealtimeSample(double v) {
-	// shift the values
+    // shift the values
 	for (auto i = animdata->end(); i != (animdata->begin()); --i) {
 		i->value = (i-1)->value;
 	}
 	// add a new datapoint at the start
 	animdata->begin()->value = v;
+
+    auto s = static_cast<double>(qv_x.size()) / 100.;
+    qv_x += { s, s+.01, s+.02 };
+    qv_y += { 0.005, 0.05, 0.028 };
 }
 
 void MainWindow::timerEvent( QTimerEvent * ) {
@@ -142,6 +160,10 @@ void MainWindow::timerEvent( QTimerEvent * ) {
 		addRealtimeSample(sin(t*5));
 		t = t + dt;
 	}
+
+    customPlot->graph(1)->setData(qv_x, qv_y);
+    customPlot->graph(1)->rescaleAxes(true);
+
 	customPlot->replot();
 }
 

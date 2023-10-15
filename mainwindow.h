@@ -31,6 +31,7 @@ private:
 	void mouseWheel();
 	void addRandomGraph();
 	void addRealtimeGraph();
+    void addRealtimeScatterPlotGraph();
 	void removeSelectedGraph();
 	void removeAllGraphs();
 	void moveLegend();
@@ -47,9 +48,11 @@ private:
 	QMenuBar *menuBar;
 	QStatusBar *statusBar;
 	QSharedPointer<QCPDataContainer<QCPGraphData> > animdata;
+    QSharedPointer<QCPGraphDataContainer> data;
 	const int nRealtimePoints = 500;
-	const double dt = 0.02;
+    const double dt = 0.02;
 	double t = 0;
+    QVector<double> qv_x, qv_y;
 };
 
 #endif // MAINWINDOW_H
