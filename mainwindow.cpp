@@ -13,7 +13,7 @@ const char titleTxt[] = "QCustomPlot Interaction and Realtime example";
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent) {
-	srand(QDateTime::currentDateTime().toTime_t());
+    //srand(QDateTime::currentDateTime().toTime_t());
 
 	// Layout
 	centralWidget = new QWidget();
